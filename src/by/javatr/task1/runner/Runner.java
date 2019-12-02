@@ -1,49 +1,46 @@
 package by.javatr.task1.runner;
 
-import by.javatr.task1.util.Ball;
-import by.javatr.task1.util.Basket;
-import by.javatr.task1.util.Color;
+import by.javatr.task1.exception.BasketSizeExceededException;
+import by.javatr.task1.exception.NegativeWeightException;
+import by.javatr.task1.exception.NoSuchProductInBasketException;
+import by.javatr.task1.util.entity.Basket;
+import by.javatr.task1.util.entity.Color;
+import by.javatr.task1.util.entity.ProductInterface;
+import by.javatr.task1.util.service.BallService;
+import by.javatr.task1.util.service.BasketService;
 
-import java.util.ArrayList;
 
 public class Runner {
     public static void main(String[] args) {
 
-        try {
+       try {
 
-            System.out.println();
-            Basket firstBasket = new Basket(new Ball(Color.BLUE, 50.8));  /*создание корзины через конструктор с параметром*/
-            firstBasket.addBallToBasket(new Ball(Color.BLUE, 40.3));      /*добавление мячей с помощью метода*/
-            firstBasket.addBallToBasket(new Ball(Color.RED, 15.3));
-            firstBasket.addBallToBasket(new Ball(Color.WHITE, 17.5));
-            firstBasket.addBallToBasket(new Ball(Color.BLUE, 91.3));
+           BasketService basketService=new BasketService();
+           BallService ballService=new BallService();
+           Basket basket=basketService.createBasket();
 
-            Color color = Color.BLUE;
+           basketService.addProductToBasket(basket,ballService.createBall(Color.BLUE,5.3));
+           basketService.addProductToBasket(basket,ballService.createBall(Color.RED,8.4));
+           basketService.addProductToBasket(basket,ballService.createBall(Color.YELLOW,7.8));
+           basketService.addProductToBasket(basket,ballService.createBall(Color.BLUE,5.5));
+           basketService.addProductToBasket(basket,ballService.createBall(Color.BLUE,3.8));
 
-            System.out.println("Корзина № 1:");
-            System.out.println("Вес мячей в корзине: " + firstBasket.getWeightOfBalls());
-            System.out.println("Количество мячей цвета " + color.name() + ": " + firstBasket.getCountOfBalls(color));
+           Color color=Color.BLUE;
 
-            ArrayList<Ball> balls = new ArrayList<>();                      /*создание набора мячей*/
-            balls.add(new Ball(Color.BLUE, 7.5));
-            balls.add(new Ball(Color.BLUE, 8.5));
-            balls.add(new Ball(Color.BLACK, 57.5));
-            balls.add(new Ball(Color.YELLOW, 7.5));
-            balls.add(new Ball(Color.BLUE, 17.9));
-            balls.add(new Ball(Color.BLUE, 71.3));
-            balls.add(new Ball(Color.BLUE, 19.5));
+           System.out.println("Корзина: ");
+           System.out.println("Вес мячей в корзине: " + basketService.getWeightOfBalls(basket));
+           System.out.println("Количество мячей цвета " + color.name() + ": " + basketService.getCountOfBalls(basket,color));
+
+           ProductInterface product=basketService.getProductFromBasket(basket,ballService.createBall(Color.BLUE,5.3));
+           basketService.removeProductFromBasket(basket,product);
+
+           System.out.println("\nКорзина после удаления элемента: ");
+           System.out.println("Вес мячей в корзине: " + basketService.getWeightOfBalls(basket));
+           System.out.println("Количество мячей цвета " + color.name() + ": " + basketService.getCountOfBalls(basket,color));
 
 
-            Basket secondBasket = new Basket(balls);                          /*создание корзины через коснструктор принимающий набор мячей*/
-
-            Color newColor = Color.BLUE;
-
-            System.out.println("\nКорзина № 2:");
-            System.out.println("Вес мячей в корзине: " + secondBasket.getWeightOfBalls());
-            System.out.println("Количество мячей цвета " + newColor.name() + ": " + secondBasket.getCountOfBalls(newColor));
-
-        } catch (IllegalArgumentException ex) {
-            System.out.println(ex.getMessage());
+        } catch (NegativeWeightException | NoSuchProductInBasketException | BasketSizeExceededException ex) {
+           System.out.println(ex.getMessage());
         }
     }
 }
