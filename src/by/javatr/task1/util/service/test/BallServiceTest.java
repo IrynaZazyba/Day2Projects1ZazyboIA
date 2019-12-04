@@ -1,4 +1,4 @@
-package by.javatr.task1.util.test;
+package by.javatr.task1.util.service.test;
 
 
 import by.javatr.task1.exception.NegativeWeightException;
