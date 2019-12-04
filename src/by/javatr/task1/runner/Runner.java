@@ -34,7 +34,7 @@ public class Runner {
             System.out.println("Number of " + color.name() + " balls: " + basketService.getCountOfBalls(basket, color));
 
             ProductInterface product = basketService.getProductFromBasket(basket, b1);
-            basketService.removeProductFromBasket(basket, product);
+            System.out.println("\n"+basketService.removeProductFromBasket(basket, product));
 
             System.out.println("\nBasket after deleting some product: ");
             System.out.println("Weight of balls in the basket: " + basketService.getWeightOfBalls(basket));
