@@ -43,7 +43,8 @@ public class Ball implements ProductInterface {
         if (getClass() != obj.getClass())
             return false;
         Ball ball = (Ball) obj;
-        if (weight != ball.getWeight())
+        if (Double.doubleToLongBits(weight) !=
+                Double.doubleToLongBits(ball.getWeight()))
             return false;
         if (color == null) {
             if (ball.color != null)
@@ -65,7 +66,8 @@ public class Ball implements ProductInterface {
 
     @Override
     public String toString() {
-        return "Ball[TITLE=" + TITLE + ", color=" + color + ", weight=" + weight + ']';
+        return getClass().getName() + "@"
+                + "TITLE=" + TITLE + ", color=" + color + ", weight=" + weight;
     }
 
     @Override

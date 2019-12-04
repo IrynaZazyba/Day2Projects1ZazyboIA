@@ -1,6 +1,5 @@
 package by.javatr.task1.util.test;
 
-import by.javatr.task1.exception.BasketSizeExceededException;
 import by.javatr.task1.exception.NegativeWeightException;
 import by.javatr.task1.exception.NoSuchProductInBasketException;
 import by.javatr.task1.util.entity.Ball;
@@ -20,47 +19,47 @@ public class BasketServiceTest {
     private static BallService ballService;
 
     @BeforeClass
-    public static void createTestData() throws NegativeWeightException, BasketSizeExceededException {
+    public static void createTestData() throws NegativeWeightException {
         basketService = new BasketService();
-        ballService=new BallService();
+        ballService = new BallService();
         basket = basketService.createBasket();
 
-        basketService.addProductToBasket(basket, ballService.createBall(Color.BLUE,4.5));
+        basketService.addProductToBasket(basket, ballService.createBall(Color.BLUE, 4.5));
         basketService.addProductToBasket(basket, ballService.createBall(Color.RED, 15.3));
         basketService.addProductToBasket(basket, ballService.createBall(Color.WHITE, 7.5));
         basketService.addProductToBasket(basket, ballService.createBall(Color.BLUE, 9.3));
         basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK, 87.6));
         basketService.addProductToBasket(basket, ballService.createBall(Color.YELLOW, 7.5));
         basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK, 97.6));
-        basketService.addProductToBasket(basket, ballService.createBall(Color.RED,94.8));
-        basketService.addProductToBasket(basket, ballService.createBall(Color.YELLOW,5.7));
-        basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK,57.9));
-        basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK,74.8));
+        basketService.addProductToBasket(basket, ballService.createBall(Color.RED, 94.8));
+        basketService.addProductToBasket(basket, ballService.createBall(Color.YELLOW, 5.7));
+        basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK, 57.9));
+        basketService.addProductToBasket(basket, ballService.createBall(Color.BLACK, 74.8));
 
     }
 
 
     @Test
-    public void addProductToBasketTest() throws NegativeWeightException,BasketSizeExceededException {
+    public void addProductToBasketTest() throws NegativeWeightException {
 
         Ball someBall = new Ball(Color.BLUE, 78.4);
 
-        basketService.addProductToBasket(basket, someBall);
+        String expected = "Product added successfully.";
+        String actual = basketService.addProductToBasket(basket, someBall);
 
-        Assert.assertTrue(basketService.getAllProductsFromBasket(basket).contains(someBall));
-
+        Assert.assertSame(expected, actual);
     }
 
 
     @Test
-    public void removeProductFromBasketTest_Remove_Exist_Ball() throws NegativeWeightException,BasketSizeExceededException{
+    public void removeProductFromBasketTest_Remove_Exist_Ball() throws NegativeWeightException {
 
         Ball someBall = new Ball(Color.BLUE, 4.5);
         basketService.addProductToBasket(basket, someBall);
+        String expected = "Product removed.";
+        String actual = basketService.removeProductFromBasket(basket, someBall);
 
-        basketService.removeProductFromBasket(basket, someBall);
-
-        Assert.assertTrue(basketService.getAllProductsFromBasket(basket).contains(someBall));
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
@@ -68,10 +67,38 @@ public class BasketServiceTest {
 
         Ball someBall = new Ball(Color.BLUE, 9.7);
 
-        basketService.removeProductFromBasket(basket, someBall);
+        String expected = "Product removed.";
+        String actual = basketService.removeProductFromBasket(basket, someBall);
 
-        Assert.assertFalse(basketService.getAllProductsFromBasket(basket).contains(someBall));
+        Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void addProductsToBasketTest_Three_Products() throws NegativeWeightException {
+
+        Basket someBasket=basketService.createBasket();
+        Ball b1=ballService.createBall(Color.RED,8.7);
+        Ball b2=ballService.createBall(Color.BLUE,5.9);
+        Ball b3=ballService.createBall(Color.YELLOW,7.5);
+
+        String expected= "3 products added.";
+        String actual=basketService.addProductsToBasket(someBasket,b1,b2,b3);
+
+        Assert.assertEquals(expected,actual);
+    }
+
+    @Test
+    public void addProductsToBasketTest_One_Product() throws NegativeWeightException {
+
+        Basket someBasket=basketService.createBasket();
+        Ball b1=ballService.createBall(Color.RED,8.7);
+
+        String expected= "1 product added.";
+        String actual=basketService.addProductsToBasket(someBasket,b1);
+
+        Assert.assertEquals(expected,actual);
+    }
+
 
     @Test
     public void createBasketTest() {
@@ -84,18 +111,18 @@ public class BasketServiceTest {
     @Test
     public void getProductFromBasketTest() throws NoSuchProductInBasketException, NegativeWeightException {
 
-        Ball expectedBall=ballService.createBall(Color.BLUE,4.5);
-        Ball actualBall=(Ball)basketService.getProductFromBasket(basket,expectedBall);
+        Ball expectedBall = ballService.createBall(Color.BLUE, 4.5);
+        Ball actualBall = (Ball) basketService.getProductFromBasket(basket, expectedBall);
 
-        Assert.assertEquals(expectedBall,actualBall);
+        Assert.assertEquals(expectedBall, actualBall);
 
     }
 
     @Test(expected = NoSuchProductInBasketException.class)
     public void getBallFromBasketTest_No_Product() throws NoSuchProductInBasketException, NegativeWeightException {
 
-        Ball expectedBall=ballService.createBall(Color.BLUE,4.1);
-        Ball actualBall=(Ball)basketService.getProductFromBasket(basket,expectedBall);
+        Ball expectedBall = ballService.createBall(Color.BLUE, 4.1);
+        Ball actualBall = (Ball) basketService.getProductFromBasket(basket, expectedBall);
 
     }
 
@@ -115,7 +142,7 @@ public class BasketServiceTest {
 
         Color color = Color.BLUE;
         int expected = 2;
-        int actual = basketService.getCountOfBalls(basket,color);
+        int actual = basketService.getCountOfBalls(basket, color);
 
         Assert.assertEquals(expected, actual);
 
@@ -126,7 +153,7 @@ public class BasketServiceTest {
 
         Color color = Color.RED;
         int expected = 2;
-        int actual = basketService.getCountOfBalls(basket,color);
+        int actual = basketService.getCountOfBalls(basket, color);
 
         Assert.assertEquals(expected, actual);
 
@@ -137,7 +164,7 @@ public class BasketServiceTest {
 
         Color color = Color.BLACK;
         int expected = 4;
-        int actual = basketService.getCountOfBalls(basket,color);
+        int actual = basketService.getCountOfBalls(basket, color);
 
         Assert.assertEquals(expected, actual);
 
@@ -148,7 +175,7 @@ public class BasketServiceTest {
 
         Color color = Color.WHITE;
         int expected = 1;
-        int actual = basketService.getCountOfBalls(basket,color);
+        int actual = basketService.getCountOfBalls(basket, color);
 
         Assert.assertEquals(expected, actual);
 
@@ -159,13 +186,11 @@ public class BasketServiceTest {
 
         Color color = Color.YELLOW;
         int expected = 2;
-        int actual = basketService.getCountOfBalls(basket,color);
+        int actual = basketService.getCountOfBalls(basket, color);
 
         Assert.assertEquals(expected, actual);
 
     }
-
-
 
 
 }

@@ -1,6 +1,5 @@
 package by.javatr.task1.util.entity;
 
-import by.javatr.task1.exception.BasketSizeExceededException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,21 +23,22 @@ public class Basket {
         return MAX_SIZE;
     }
 
-    public void addToBasket(ProductInterface product) throws BasketSizeExceededException {
-        if (product == null) {
-            products = new ArrayList<>();
-        }
-        if (products.size() >= MAX_SIZE) {
-            throw new BasketSizeExceededException("Basket is full");
-        }
-        this.products.add(product);
+    public boolean addToBasket(ProductInterface product)  {
 
+        if (products.size() > MAX_SIZE) {
+            return false;
+        }
+        if (product != null) {
+            return this.products.add(product);
+        }
+        return true;
     }
 
-    public void removeFromBasket(ProductInterface product) {
-        if (product != null && products.contains(product)) {
-            products.remove(product);
+    public boolean removeFromBasket(ProductInterface product) {
+        if (product != null&&products.contains(product)) {
+           return products.remove(product);
         }
+        return true;
     }
 
     @Override
@@ -70,6 +70,8 @@ public class Basket {
 
     @Override
     public String toString() {
-        return "Basket[MAX_SIZE=" + MAX_SIZE + ", products=" + products + ']';
+        return getClass().getName() + "@"
+                + "MAX_SIZE=" + MAX_SIZE
+                + ", products=" + products;
     }
 }

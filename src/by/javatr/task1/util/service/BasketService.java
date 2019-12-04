@@ -1,6 +1,5 @@
 package by.javatr.task1.util.service;
 
-import by.javatr.task1.exception.BasketSizeExceededException;
 import by.javatr.task1.exception.NoSuchProductInBasketException;
 import by.javatr.task1.util.entity.Ball;
 import by.javatr.task1.util.entity.Color;
@@ -16,14 +15,28 @@ public class BasketService {
         return new Basket();
     }
 
-    public void addProductToBasket(Basket basket, ProductInterface product) throws BasketSizeExceededException {
-
-        basket.addToBasket(product);
+    public String addProductsToBasket(Basket basket, ProductInterface... p) {
+        int count = 0;
+        for (int i = 0; i < p.length; i++) {
+            if (basket.addToBasket(p[i])) {
+                ++count;
+            }
+        }
+        return  count>1? count+" products added.":count +" product added.";
     }
 
-    public void removeProductFromBasket(Basket basket, ProductInterface product) {
+    public String addProductToBasket(Basket basket, ProductInterface product) {
+        if (basket.addToBasket(product)) {
+            return "Product added successfully.";
+        }
+        return "Basket is full.";
+    }
 
-        basket.removeFromBasket(product);
+    public String removeProductFromBasket(Basket basket, ProductInterface product) {
+        if (basket.removeFromBasket(product)) {
+            return "Product removed.";
+        }
+        return "Product wasn't remove.";
     }
 
 

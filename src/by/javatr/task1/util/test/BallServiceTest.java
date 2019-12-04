@@ -1,7 +1,6 @@
 package by.javatr.task1.util.test;
 
 
-import by.javatr.task1.exception.BasketSizeExceededException;
 import by.javatr.task1.exception.NegativeWeightException;
 import by.javatr.task1.util.entity.Ball;
 import by.javatr.task1.util.service.BallService;
@@ -19,7 +18,7 @@ public class BallServiceTest {
     private static BallService ballService;
 
     @BeforeClass
-    public static void createTestData() throws NegativeWeightException, BasketSizeExceededException {
+    public static void createTestData() throws NegativeWeightException {
         basketService = new BasketService();
         ballService = new BallService();
         basket = basketService.createBasket();
